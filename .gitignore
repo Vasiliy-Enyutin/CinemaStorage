@@ -1,0 +1,144 @@
+.idea/
+*.sln.iml
+*.userprefs
+*.csproj.DotSettings
+*.DotSettings.user
+
+## Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.njsproj
+*.jsproj
+*.pubxml
+*.publishsettings
+
+## Build
+bin/
+obj/
+[Bb]uild/
+[Bb]uildLog/
+*.log
+*.tlog
+*.binlog
+
+## Packages
+packages/
+*.nupkg
+.nuget/
+
+## Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+## VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## User files
+*.[Pp]ublish.xml
+*.userprefs
+*.usertasks
+
+## ReSharper
+_ReSharper*/
+*.ReSharper
+*.DotSettings.user
+
+## Rider backup files
+_jetbrains_help/
+*.backup.*
+
+## OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+## Database files
+*.mdf
+*.ldf
+*.sdf
+
+## Local development files
+appsettings.Development.json
+appsettings.Local.json
+
+## Docker
+docker-compose.override.yml
+
+## Azure
+*.azurepubxml
+*.pubxml
+
+## NuGet
+.nuget/
+nuget.exe
+
+## Node.js
+node_modules/
+npm-debug.log
+
+## VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## IDE - JetBrains
+.idea/
+*.sln.iml
+*.DotSettings.user
+*.userprefs
+
+## Misc
+*.swp
+*.swo
+*~
+*.orig
+*.log
+*.pid
+*.seed
+*.pid.lock
+*.min.js
+*.min.css
+*.dotCover
+*.testsettings
+*.testlog
+*.jmx
+*.bak
+*.cache
+*.diff
+*.patch
+*.sublime-workspace
+*.sublime-project
+*.vspscc
+*.vssscc
+*.tmp
+*.temp
+*.TMP
+*.TEMP
+*.ncrunchsolution
+*.ncrunchproject
+*.sass-cache/
+*.sqlite
+*.sql
+*.db
+*.sqlproj
+*.dbmdl
+*.jfm
+*.pfx
+*.p12
+*.cer
+*.der
+*.crt
+*.key
