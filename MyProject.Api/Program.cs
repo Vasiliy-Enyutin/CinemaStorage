@@ -15,6 +15,9 @@ using ApplicationDbContext = MyProject.DAL.Data.ApplicationDbContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddControllers()
     .AddFluentValidation(fv => 
     {
@@ -26,16 +29,10 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateTodoItemRequestValida
 builder.Services.AddValidatorsFromAssemblyContaining<UserRegisterRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserLoginRequestValidator>();
 
-// Database
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Репозитории и сервисы
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-// JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

@@ -26,12 +26,6 @@ public class TodoController(ITodoRepository todoRepository) : ControllerBase
     [HttpPost("createTodo")]
     public async Task<ActionResult<TodoItemResponseDto>> CreateTodo([FromBody] CreateTodoItemRequestDto createTodoDto)
     {
-        // TODO валидация
-        if (!ModelState.IsValid)
-        {
-            throw new ApiException("Invalid request data");
-        }
-
         var userId = GetUserId() ?? throw new UserIdentificationException();
 
         var todoItem = new TodoItem

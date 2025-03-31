@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using MyProject.Core.Interfaces;
 using MyProject.Core.Models;
 using MyProject.DAL.Data;
@@ -14,7 +13,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 
     public async Task<User?> GetByUsernameAsync(string username)
     {
-        return await context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        return await context.Users.FindAsync(username);
     }
 
     public async Task AddAsync(User user)

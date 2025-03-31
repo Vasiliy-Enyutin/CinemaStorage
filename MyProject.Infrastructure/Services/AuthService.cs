@@ -19,12 +19,14 @@ public class AuthService(
     private const string JwtConfigurationSectionNotFound = "JwtConfigurationSectionNotFound";
     private const string JwtSecretKeyNotFound = "JWT secret key not found";
     private const string JwtExpireDaysMustBePositive = "ExpireDays must be positive";
+    private const string UsernameAlreadyExists = "Username already exists";
+    private const string UserCreationFailed = "User creation failed";
     
     public async Task<User> Register(string username, string password)
     {
         if (await userRepository.GetByUsernameAsync(username) != null)
         {
-            throw new UserExistsException();
+            throw new ApiException(UsernameAlreadyExists);
         }
 
         CreatePasswordHash(password, out var hash, out var salt);
@@ -37,7 +39,7 @@ public class AuthService(
         };
 
         await userRepository.AddAsync(user);
-        return user ?? throw new InvalidOperationException("User creation failed");    
+        return user ?? throw new InvalidOperationException(UserCreationFailed);    
     }
 
     public async Task<string> Login(string username, string password)
