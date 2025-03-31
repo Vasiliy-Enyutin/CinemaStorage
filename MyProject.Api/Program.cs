@@ -22,7 +22,7 @@ builder.Services.AddControllers()
         fv.ImplicitlyValidateChildProperties = true;
     });
 
-builder.Services.AddValidatorsFromAssemblyContaining<TodoItemRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTodoItemRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserRegisterRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserLoginRequestValidator>();
 
