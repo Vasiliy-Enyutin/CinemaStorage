@@ -7,7 +7,7 @@ namespace MyProject.DAL.Repositories;
 
 public class TodoRepository(ApplicationDbContext context) : ITodoRepository
 {
-    public async Task<IEnumerable<TodoItem>> GetByUserIdAsync(int userId)
+    public async Task<List<TodoItem>> GetByUserIdAsync(int userId)
         => await context.TodoItems
             .Where(t => t.UserId == userId)
             .AsNoTracking()

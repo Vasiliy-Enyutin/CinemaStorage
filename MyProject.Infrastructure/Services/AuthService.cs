@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MyProject.Core.Exceptions;
 using MyProject.Core.Interfaces;
 using MyProject.Core.Models;
 using MyProject.Infrastructure.Interfaces;
@@ -14,11 +15,16 @@ public class AuthService(
     IUserRepository userRepository,
     IConfiguration configuration) : IAuthService
 {
+    private const int JwtDefaultExpireDays = 7;
+    private const string JwtConfigurationSectionNotFound = "JwtConfigurationSectionNotFound";
+    private const string JwtSecretKeyNotFound = "JWT secret key not found";
+    private const string JwtExpireDaysMustBePositive = "ExpireDays must be positive";
+    
     public async Task<User> Register(string username, string password)
     {
         if (await userRepository.GetByUsernameAsync(username) != null)
         {
-            throw new Exception("User already exists");
+            throw new UserExistsException();
         }
 
         CreatePasswordHash(password, out var hash, out var salt);
@@ -31,7 +37,7 @@ public class AuthService(
         };
 
         await userRepository.AddAsync(user);
-        return user;
+        return user ?? throw new InvalidOperationException("User creation failed");    
     }
 
     public async Task<string> Login(string username, string password)
@@ -39,7 +45,7 @@ public class AuthService(
         var user = await userRepository.GetByUsernameAsync(username);
         if (user == null || !VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
         {
-            return string.Empty;
+            throw new InvalidCredentialsException();
         }
 
         return GenerateJwtToken(user);
@@ -50,13 +56,13 @@ public class AuthService(
         var jwtSection = configuration.GetSection("Jwt");
         if (!jwtSection.Exists())
         {
-            throw new InvalidOperationException("JWT configuration section not found in appsettings.json");
+            throw new JwtConfigurationException(JwtConfigurationSectionNotFound);
         }
 
         var jwtKey = jwtSection["Key"];
         if (string.IsNullOrEmpty(jwtKey))
         {
-            throw new ArgumentNullException("Jwt:Key", "JWT secret key is required");
+            throw new JwtConfigurationException(JwtSecretKeyNotFound);
         }
 
         var claims = new[]
@@ -69,10 +75,10 @@ public class AuthService(
     
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var expireDays = jwtSection.GetValue<double?>("ExpireDays") ?? 7;
+        var expireDays = jwtSection.GetValue<double?>("ExpireDays") ?? JwtDefaultExpireDays;
         if (expireDays <= 0)
         {
-            throw new ArgumentException("ExpireDays must be positive number");
+            throw new JwtConfigurationException(JwtExpireDaysMustBePositive);
         }
 
         var token = new JwtSecurityToken(

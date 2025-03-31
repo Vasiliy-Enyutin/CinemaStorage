@@ -1,17 +1,30 @@
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyProject.Api.Validators;
 using MyProject.Core.Interfaces;
 using MyProject.DAL.Repositories;
 using MyProject.Infrastructure.Interfaces;
+using MyProject.Infrastructure.Middleware;
 using MyProject.Infrastructure.Services;
 using ApplicationDbContext = MyProject.DAL.Data.ApplicationDbContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddFluentValidation(fv => 
+    {
+        fv.AutomaticValidationEnabled = true;
+        fv.ImplicitlyValidateChildProperties = true;
+    });
+
+builder.Services.AddValidatorsFromAssemblyContaining<TodoItemRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UserRegisterRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UserLoginRequestValidator>();
 
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -70,6 +83,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI();
 

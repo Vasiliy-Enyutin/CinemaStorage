@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MyProject.Api.Dtos.RequestDtos;
+using MyProject.Api.DTOs.ResponseDtos;
 using MyProject.Core.Models;
 using MyProject.Infrastructure.Interfaces;
 
@@ -10,36 +11,21 @@ namespace MyProject.Api.Controllers;
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<ActionResult<User>> Register(UserRegisterRequestDto request)
+    public async Task<ActionResult<UserResponseDto>> Register(UserRegisterRequestDto request)
     {
-        try
-        {
-            var user = await authService.Register(request.Username, request.Password);
-            return Ok(user);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        
+        var user = await authService.Register(request.Username, request.Password);
+        return Ok(ToResponseDto(user));
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<string>> Login(UserLoginRequestDto request)
     {
-        try
-        {
-            var token = await authService.Login(request.Username, request.Password);
-            if (string.IsNullOrEmpty(token))
-            {
-                return Unauthorized();
-            }
-        
-            return Ok(token);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        var token = await authService.Login(request.Username, request.Password);
+        return Ok(token);
+    }
+    
+    private static UserResponseDto ToResponseDto(User user)
+    {
+        return new UserResponseDto(user.Id, user.Username);
     }
 }
