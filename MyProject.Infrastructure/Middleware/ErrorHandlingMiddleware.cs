@@ -5,13 +5,14 @@ using Microsoft.Extensions.Logging;
 using MyProject.Core.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace MyProject.Infrastructure.Middleware;
 
 public class ErrorHandlingMiddleware(
     RequestDelegate next,
     ILogger<ErrorHandlingMiddleware> logger,
-    IHostingEnvironment environment)
+    IWebHostEnvironment environment)
 {
     public async Task Invoke(HttpContext context)
     {
@@ -67,10 +68,10 @@ public class ErrorHandlingMiddleware(
                 break;
         }
 
-        problemDetails.Instance = context.Request.Path; // Optional: Add the request path
-
+        problemDetails.Instance = context.Request.Path;
+        
         response.ContentType = "application/json";
-        response.StatusCode = problemDetails.Status ?? 500;  // Ensure StatusCode is not null
+        response.StatusCode = problemDetails.Status ?? 500;
 
         var json = JsonSerializer.Serialize(problemDetails);
         await response.WriteAsync(json);
