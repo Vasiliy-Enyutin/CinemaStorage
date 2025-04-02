@@ -32,8 +32,10 @@ public class MovieController(IMovieRepository movieRepository) : ControllerBase
         {
             Title = addMovieDto.Title,
             Description = addMovieDto.Description,
+            IsViewed = addMovieDto.IsViewed,
             Assessment = addMovieDto.Assessment,
-            IsViewed = false,
+            AssessmentKinopoisk = addMovieDto.AssessmentKinopoisk,
+            Length = addMovieDto.Length,
             UserId = userId
         };
 
@@ -64,6 +66,6 @@ public class MovieController(IMovieRepository movieRepository) : ControllerBase
 
     private static MovieResponseDto ToResponseDto(Movie item)
     {
-        return new MovieResponseDto(item.Id, item.Title, item.Description, item.IsViewed, item.Assessment);
+        return new MovieResponseDto(item.Id, item.Title, item.IsViewed, item.Description, item.Assessment, item.AssessmentKinopoisk, item.Length);
     }
 }
