@@ -5,22 +5,22 @@ using MyProject.DAL.Data;
 
 namespace MyProject.DAL.Repositories;
 
-public class TodoRepository(ApplicationDbContext context) : ITodoRepository
+public class MovieRepository(ApplicationDbContext context) : IMovieRepository
 {
-    public async Task<List<TodoItem>> GetByUserIdAsync(int userId)
-        => await context.TodoItems
+    public async Task<List<Movie>> GetByUserIdAsync(int userId)
+        => await context.Movies
             .Where(t => t.UserId == userId)
             .AsNoTracking()
             .ToListAsync();
 
-    public async Task<TodoItem?> GetByIdAsync(int id)
-        => await context.TodoItems
+    public async Task<Movie?> GetByIdAsync(int id)
+        => await context.Movies
             .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == id);
 
-    public async Task AddAsync(TodoItem item)
+    public async Task AddAsync(Movie item)
     {
-        await context.TodoItems.AddAsync(item);
+        await context.Movies.AddAsync(item);
         await context.SaveChangesAsync();
     }
 }

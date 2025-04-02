@@ -1,7 +1,8 @@
 namespace MyProject.Api.Dtos.ResponseDtos;
 
-public record TodoItemResponseDto(
+public record MovieResponseDto(
     int Id, 
     string Title, 
     string Description, 
-    bool IsCompleted);
+    bool IsViewed,
+    int Assessment);

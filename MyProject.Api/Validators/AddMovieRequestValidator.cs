@@ -3,9 +3,9 @@ using MyProject.Api.Dtos.RequestDtos;
 
 namespace MyProject.Api.Validators;
 
-public class CreateTodoItemRequestValidator : AbstractValidator<CreateTodoItemRequestDto>
+public class AddMovieRequestValidator : AbstractValidator<AddMovieRequestDto>
 {
-    public CreateTodoItemRequestValidator()
+    public AddMovieRequestValidator()
     {
         RuleFor(x => x.Title)
             .NotEmpty().WithMessage("Title is required")
