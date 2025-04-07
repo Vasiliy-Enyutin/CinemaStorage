@@ -1,4 +1,3 @@
-using System.Text.Json;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -22,11 +21,11 @@ public class ErrorHandlingMiddleware(
         }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(context, ex, context.Response);
+            await HandleExceptionAsync(context, ex);
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception exception, HttpResponse response)
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         var problemDetails = new ProblemDetails();
 
@@ -70,10 +69,9 @@ public class ErrorHandlingMiddleware(
 
         problemDetails.Instance = context.Request.Path;
         
-        response.ContentType = "application/json";
-        response.StatusCode = problemDetails.Status ?? 500;
-
-        var json = JsonSerializer.Serialize(problemDetails);
-        await response.WriteAsync(json);
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = problemDetails.Status ?? 500;
+        
+        await context.Response.WriteAsJsonAsync(problemDetails);
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyProject.Api.Validators;
 using MyProject.Core.Interfaces;
+using MyProject.Core.Profiles;
 using MyProject.DAL.Repositories;
 using MyProject.Infrastructure.Interfaces;
 using MyProject.Infrastructure.Middleware;
@@ -24,6 +25,8 @@ builder.Services.AddControllers()
         fv.AutomaticValidationEnabled = true;
         fv.ImplicitlyValidateChildProperties = true;
     });
+
+// builder.Services.AddAutoMapper(typeof(AuthProfile).Assembly);
 
 builder.Services.AddValidatorsFromAssemblyContaining<UserRegisterRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserLoginRequestValidator>();

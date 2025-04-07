@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MyProject.Core.Exceptions;
@@ -20,13 +21,12 @@ public class AuthService(
     private const string JwtSecretKeyNotFound = "JWT secret key not found";
     private const string JwtExpireDaysMustBePositive = "ExpireDays must be positive";
     private const string UsernameAlreadyExists = "Username already exists";
-    private const string UserCreationFailed = "User creation failed";
     
-    public async Task<User> Register(string username, string password)
+    public async Task Register(string username, string password)
     {
         if (await userRepository.GetByUsernameAsync(username) != null)
         {
-            throw new ApiException(UsernameAlreadyExists);
+            throw new ApiException(UsernameAlreadyExists, StatusCodes.Status409Conflict);
         }
 
         CreatePasswordHash(password, out var hash, out var salt);
@@ -39,7 +39,6 @@ public class AuthService(
         };
 
         await userRepository.AddAsync(user);
-        return user ?? throw new InvalidOperationException(UserCreationFailed);    
     }
 
     public async Task<string> Login(string username, string password)

@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using MyProject.Core.Dtos.RequestDtos;
-using MyProject.Core.Dtos.ResponseDtos;
-using MyProject.Core.Models;
 using MyProject.Infrastructure.Interfaces;
 
 namespace MyProject.Api.Controllers;
@@ -11,21 +9,27 @@ namespace MyProject.Api.Controllers;
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<ActionResult<UserResponseDto>> Register(UserRegisterRequestDto request)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult> Register(UserRegisterRequestDto request)
     {
-        var user = await authService.Register(request.Username, request.Password);
-        return Ok(ToResponseDto(user));
+        await authService.Register(request.Username, request.Password);
+        return Ok();
     }
 
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<string>> Login(UserLoginRequestDto request)
     {
         var token = await authService.Login(request.Username, request.Password);
-        return Ok(token);
-    }
-    
-    private static UserResponseDto ToResponseDto(User user)
-    {
-        return new UserResponseDto(user.Id, user.Username);
+        // return Ok(token);
+        Response.Cookies.Append("access_token", token, new CookieOptions
+        {
+            HttpOnly = true,
+            SameSite = SameSiteMode.Strict
+        });
+
+        return Ok();
     }
 }
