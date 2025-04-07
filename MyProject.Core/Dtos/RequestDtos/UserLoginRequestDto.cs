@@ -1,3 +1,3 @@
-namespace MyProject.Api.Dtos.RequestDtos;
+namespace MyProject.Core.Dtos.RequestDtos;
 
 public record UserLoginRequestDto(string Username, string Password);

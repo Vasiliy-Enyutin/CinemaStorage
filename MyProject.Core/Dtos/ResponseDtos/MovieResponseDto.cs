@@ -1,4 +1,4 @@
-namespace MyProject.Api.Dtos.ResponseDtos;
+namespace MyProject.Core.Dtos.ResponseDtos;
 
 public record MovieResponseDto(
     int Id, 

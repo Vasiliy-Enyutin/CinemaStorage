@@ -1,5 +1,6 @@
 using FluentValidation;
 using MyProject.Api.Dtos.RequestDtos;
+using MyProject.Core.Dtos.RequestDtos;
 
 namespace MyProject.Api.Validators;
 

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using MyProject.Api.Dtos.RequestDtos;
-using MyProject.Api.DTOs.ResponseDtos;
+using MyProject.Core.Dtos.RequestDtos;
+using MyProject.Core.Dtos.ResponseDtos;
 using MyProject.Core.Models;
 using MyProject.Infrastructure.Interfaces;
 

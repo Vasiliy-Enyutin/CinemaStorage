@@ -1,8 +1,8 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyProject.Api.Dtos.RequestDtos;
-using MyProject.Api.Dtos.ResponseDtos;
+using MyProject.Core.Dtos.RequestDtos;
+using MyProject.Core.Dtos.ResponseDtos;
 using MyProject.Core.Exceptions;
 using MyProject.Core.Interfaces;
 using MyProject.Core.Models;
