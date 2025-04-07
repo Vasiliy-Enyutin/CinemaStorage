@@ -25,12 +25,10 @@ builder.Services.AddControllers()
         fv.ImplicitlyValidateChildProperties = true;
     });
 
-builder.Services.AddValidatorsFromAssemblyContaining<AddMovieRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserRegisterRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserLoginRequestValidator>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
